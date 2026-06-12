@@ -164,6 +164,7 @@ body.cursor-on,body.cursor-on a,body.cursor-on button{cursor:none}
 .hud-controls{display:flex;gap:10px}
 .hud-btn{
   font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  white-space:nowrap;
   padding:9px 14px;
   border:1px solid var(--line);border-radius:99px;
   background:color-mix(in srgb, var(--bg) 65%, transparent);
@@ -173,6 +174,7 @@ body.cursor-on,body.cursor-on a,body.cursor-on button{cursor:none}
 }
 .hud-btn:hover{border-color:var(--bayside);color:var(--bayside)}
 .hud-btn[aria-pressed="true"]{border-color:var(--sodium);color:var(--sodium)}
+.lbl-short{display:none}
 #sec-label b{color:var(--bayside)}
 #scroll-pct{font-variant-numeric:tabular-nums}
 
@@ -588,6 +590,14 @@ section{
   section{padding:14vh 6vw 12vh}
   .hero-title{font-size:clamp(3.4rem,21vw,9rem)}
 }
+@media (max-width:640px){
+  .hud-top{padding:14px 16px}
+  .hud-controls{gap:6px}
+  .hud-btn{padding:7px 11px;font-size:10px;letter-spacing:.06em}
+  .logo span{display:none}
+  .lbl-full{display:none}
+  .lbl-short{display:inline}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .noise,.marquee-inner,.scroll-cue::after,.pulse,
@@ -628,8 +638,8 @@ body.rm .noise,body.rm .marquee-inner{animation:none}
     <span class="mono">PORTFOLIO — 2026</span>
   </a>
   <div class="hud-controls">
-    <button class="hud-btn mono" id="sfx-toggle" aria-pressed="false" data-magnetic>SFX: OFF</button>
-    <button class="hud-btn mono" id="theme-toggle" data-magnetic aria-label="テーマ切替">NIGHT / DAY</button>
+    <button class="hud-btn mono" id="sfx-toggle" aria-pressed="false" data-magnetic aria-label="効果音の切替"><span class="lbl-full" id="sfx-state">SFX: OFF</span><span class="lbl-short" aria-hidden="true">SFX</span></button>
+    <button class="hud-btn mono" id="theme-toggle" data-magnetic aria-label="テーマ切替"><span class="lbl-full">NIGHT / DAY</span><span class="lbl-short" aria-hidden="true">N/D</span></button>
     <button class="hud-btn mono" id="menu-toggle" aria-expanded="false" aria-controls="menu" data-magnetic>MENU</button>
   </div>
 </header>
@@ -926,7 +936,7 @@ sfxBtn.addEventListener("click", function(){
   ensureCtx();
   sfxOn = !sfxOn;
   sfxBtn.setAttribute("aria-pressed", String(sfxOn));
-  sfxBtn.textContent = sfxOn ? "SFX: ON" : "SFX: OFF";
+  document.getElementById("sfx-state").textContent = sfxOn ? "SFX: ON" : "SFX: OFF";
   if (sfxOn){ blip(660,.05,"square",.05); setTimeout(function(){blip(990,.07,"square",.05);},70); }
 });
 document.addEventListener("pointerenter", function(e){
